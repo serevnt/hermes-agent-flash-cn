@@ -300,7 +300,13 @@ def _tool_guidance_block(agent: Any) -> Optional[str]:
 
 def _skills_prompt(agent: Any) -> str:
     """Skills index (empty without skills tools).  Focus mode demotes non-coding
-    categories to names-only — never hidden, every name stays visible."""
+    categories to names-only — never hidden, every name stays visible.
+
+    本地改造 20261109：``agent.skill_compact_categories`` 显式配置的分类**无视** coding/focus
+    门槛始终折叠为 names-only（配置为 None/空时保持上游行为）。目的是压缩系统提示里的技能索引
+    token 占用；折叠只省略描述，技能仍可 skill_view 加载，不做任何裁剪。说明见
+    docs/local-mods/SKILL_COMPACT.md
+    """
     if not any(name in agent.valid_tool_names for name in ['skills_list', 'skill_view', 'skill_manage']):
         return ""
     import model_tools
@@ -310,8 +316,24 @@ def _skills_prompt(agent: Any) -> str:
         _compact_cats = coding_compact_skill_categories(platform=agent.platform, cwd=resolve_context_cwd())
     except Exception:
         _compact_cats = frozenset()
+    # 本地改造：显式配置的分类无条件折叠（异常/类型错误一律降级为空，绝不影响会话启动）
+    _extra_cats = frozenset()
+    _compact_skills = frozenset()
+    try:
+        from agent.coding_context import _agent_config_value
+        _extra = _agent_config_value(None, "skill_compact_categories", (), readonly=True)
+        if isinstance(_extra, (list, tuple, set)):
+            _extra_cats = frozenset(str(c).strip() for c in _extra if str(c).strip())
+        _sq = _agent_config_value(None, "skill_compact_skills", (), readonly=True)
+        if isinstance(_sq, (list, tuple, set)):
+            _compact_skills = frozenset(str(s).strip() for s in _sq if str(s).strip())
+    except Exception:
+        pass
+    if _extra_cats:
+        _compact_cats = frozenset(_compact_cats) | _extra_cats
     return _pb.build_skills_system_prompt(available_tools=agent.valid_tool_names, available_toolsets=avail_toolsets,
-                                         compact_categories=_compact_cats or None, skills_dir_override=_agent_skills_dir(agent))
+                                         compact_categories=_compact_cats or None, skills_dir_override=_agent_skills_dir(agent),
+                                         compact_skills=_compact_skills or None)
 
 
 def _auto_load_parts(agent: Any) -> list[str]:

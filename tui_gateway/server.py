@@ -184,6 +184,8 @@ _DETAIL_MODES = frozenset({"hidden", "collapsed", "expanded"})
 # render (up to sessions.max_export_messages rows, ~0.8s at the default cap); onboarding.start = session
 # creation + a prompt.submit; onboarding.state = a bounded wait on the boot-time due answer.
 _LONG_HANDLERS = frozenset({
+    "session.create",  # 本地改造 20261109（#150103）：创建会话可能重达数分钟（多会话+大上下文+长命令时实测 3m47s），
+                       # 内联跑在 WS 读循环上会冻住整个桌面端。走 RPC 池后只延迟新会话自己，其余 RPC 正常应答。
     "session.foreign.list", "session.foreign.preview", "session.foreign.import",
     "billing.state", "subscription.state", "subscription.preview", "subscription.change",
     "subscription.resume", "subscription.upgrade", "usage.bars", "session.usage", "billing.step_up",

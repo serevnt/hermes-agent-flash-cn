@@ -89,7 +89,7 @@
 | # | 任务 | 状态 |
 |---|---|---|
 | P1 | 补依赖 | ✅ 已完成 |
-| P2 | 修 embedding | 🔄 fastembed 独立可用；**LCM 生产路径待重启验证**（发现 lcm.db 无向量表） |
+| P2 | 修 embedding | 🔶 **2026-11-09 16:34 揪出真因**：fastembed 只装在 `.venv`，而 gateway 实际运行 `J:\HermesShared\data\tools\python-3.14.9+…\python.exe`（该环境连 numpy 都没有）。已用其自带 pip 26.2.2 补装 fastembed 0.9.1；gateway 进程内已熔断，**需重启才生效** |
 | P3 | 建 Setting 配置层 | ⬜ |
 
 ### 六项需求

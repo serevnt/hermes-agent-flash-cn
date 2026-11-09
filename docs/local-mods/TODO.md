@@ -26,6 +26,7 @@
 | 14 | **压缩指针（需求 2）** | `compress()` 记录 + `select_context()` 注入；13 项断言全过 | `COMPACTION_POINTER.md` ✅ |
 | 15 | **四维重排（需求 4）** | `sort=fourdim`（覆盖度/短语/时效/来源）；17 项断言全过 | `FOURDIM_RERANK.md` ✅ |
 | 16 | **跨会话检索路径（需求 3）** | 实测两条路径：grep 稳定 20 结果 0 降级、recall 8s 预算不够 | `CROSS_SESSION_RECALL.md` ✅ |
+| 17 | **trigram 中文索引** | 建 `messages_fts_trigram` + 3 触发器（132s / +560MB）；3 字以上查询快 3-153×，结果 20/20 一致；2 字仍走 LIKE | `TRIGRAM_INDEX.md` ✅ |
 
 ---
 

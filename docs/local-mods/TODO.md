@@ -34,7 +34,7 @@
 
 | # | 决策 | 选择 | 状态 |
 |---|---|---|---|
-| D1 | 2984 提交推 fork | **1 = 推** | ⏸ 首次 push 前仍需确认 |
+| D1 | 2984 提交推 fork | **1 = 推** | ✅ 已完成 2026-11-09 15:55：`dea46de2f2` → `origin/cn-main`，ls-remote 与本地 HEAD 逐字一致 |
 | D2 | config/.env 快照 | **1 = 做** | ✅ 已完成 |
 | D3 | 搜索方向 | **3+4**：纳入 Setting + 修 web_extract curl 坑 | ⬜ |
 | D4 | LCM 工具分层 | **常驻 6 个**（用户追加：clarify 不 defer） | ✅ 已完成 |
@@ -125,8 +125,8 @@
 | 5 | `SKILL_COMPACT.md` | ✅ |
 | 6 | `GATEWAY_FIX.md` | ✅ |
 | 7 | `EMBEDDING_STATUS.md` | ✅ |
-| 8 | **本地 commit** | 🔄 本轮结束前做 |
-| 9 | **push 到 fork** | ⏸ 必须用户确认 |
+| 8 | **本地 commit** | ✅ 已完成（6 个 commit 于 `cn-main`） |
+| 9 | **push 到 fork** | ✅ 已完成 2026-11-09 15:55（`dea46de2f2`，远程分支已建、跟踪已配） |
 
 ---
 

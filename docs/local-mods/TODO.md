@@ -23,6 +23,9 @@
 | 11 | **LCM embedding 启用** | warmup + backfill **441 条 summary 全部向量化**（failed=0）；4 张 `lcm_embedding_*` 表已建 | `LCM_EMBEDDING_ENABLED.md` ✅ |
 | 12 | **web_extract 修复** | 自写 `plugins/web/native`（零 key），实测 example.com/python.org 正常 | `WEB_EXTRACT.md` ✅ |
 | 13 | **iWIN 配置结构化** | 顶层 `iwin:` 段 + 同步脚本；env 值已校验一致 | `IWIN_CONFIG.md` ✅ |
+| 14 | **压缩指针（需求 2）** | `compress()` 记录 + `select_context()` 注入；13 项断言全过 | `COMPACTION_POINTER.md` ✅ |
+| 15 | **四维重排（需求 4）** | `sort=fourdim`（覆盖度/短语/时效/来源）；17 项断言全过 | `FOURDIM_RERANK.md` ✅ |
+| 16 | **跨会话检索路径（需求 3）** | 实测两条路径：grep 稳定 20 结果 0 降级、recall 8s 预算不够 | `CROSS_SESSION_RECALL.md` ✅ |
 
 ---
 
@@ -71,11 +74,11 @@
 | # | 需求 | 定案 | 状态 |
 |---|---|---|---|
 | 1 | 技能折叠 | compact 放开全场景 | ✅ **超额完成**（做了技能级折叠，比原计划分类级更细） |
-| 2 | 长久记忆 | 压缩指针 + 四维重排 | ⬜ |
-| 3 | 跨会话记忆 | B：按需检索 | ⬜ 依赖 P2 |
-| 4 | 本地记忆筛选 | 丙：重排（Hindsight 优先 → LCM 兜底） | ⬜ |
-| 5 | 人格系统 | 并存 + Setting 切换 | ⬜ 依赖 P3 |
-| 6 | iWIN 内置 | 23 工具转原生插件 | ⬜ 依赖 P1（已完成） |
+| 2 | 长久记忆 | 压缩指针 + 四维重排 | ✅ **完成**：`select_context()` 注入指针（13 项断言）；`sort=fourdim`（17 项断言） |
+| 3 | 跨会话记忆 | B：按需检索 | ✅ **路径确定**：`lcm_grep(sort=fourdim, scope=all)` 为主力；`lcm_recall` 留给取证场景 |
+| 4 | 本地记忆筛选 | 丙：重排（Hindsight 优先 → LCM 兜底） | ✅ **重排完成**（四维）；降级链属调用侧策略，未写进代码 |
+| 5 | 人格系统 | 并存 + Setting 切换 | ⏸ **用户 11-09 搁置** |
+| 6 | iWIN 内置 | 23 工具转原生插件 | ⏸ **用户 11-09 搁置**（配置化已完成） |
 
 ---
 

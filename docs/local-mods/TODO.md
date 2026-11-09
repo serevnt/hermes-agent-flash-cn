@@ -20,6 +20,9 @@
 | 8 | 技能合并+归档 | multi-model-review 并入；native-mcp / writing-plans-en 归档；活跃 185 | — |
 | 9 | 悬空引用清理 | hermes-mcp-configuration 的 related_skills + 正文已修 | — |
 | 10 | snowballstemmer | 已装，工具折叠激活 | — |
+| 11 | **LCM embedding 启用** | warmup + backfill **441 条 summary 全部向量化**（failed=0）；4 张 `lcm_embedding_*` 表已建 | `LCM_EMBEDDING_ENABLED.md` ✅ |
+| 12 | **web_extract 修复** | 自写 `plugins/web/native`（零 key），实测 example.com/python.org 正常 | `WEB_EXTRACT.md` ✅ |
+| 13 | **iWIN 配置结构化** | 顶层 `iwin:` 段 + 同步脚本；env 值已校验一致 | `IWIN_CONFIG.md` ✅ |
 
 ---
 
@@ -45,7 +48,8 @@
 | V1 | 工具折叠生效 | 看 `agent.log` 的 tool 统计行 | 工具数下降、prefill 减少 |
 | V2 | 技能折叠生效 | 看系统提示的 `## Skills` 段 | 71 个技能只有名字无描述 |
 | V3 | gateway 修复生效 | 多会话时新建会话 | 不再整端冻死 |
-| V4 | **LCM semantic 是否真走 embedding** | `lcm_grep(query="城市旅人", mode="semantic")` | 语义命中 ≠ 关键词命中 |
+| V4 | **LCM semantic 是否真走 embedding** | `lcm_grep(query="城市旅人", mode="semantic")`（**默认 current scope**） | `degraded_to_fts: false` |
+| V6 | **web_extract 可用** | 直接调 `web_extract(urls=[...])` | 返回 content，无需 curl -k |
 | V5 | pillow 13 影响 | iwin 图像工具调用一次 | 正常（iwin 用独立 venv 11.3.0，已确认） |
 
 **重启方式**：桌面端托盘退出再启动；gateway 用 `hermes gateway restart`。
